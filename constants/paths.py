@@ -1,14 +1,11 @@
 from typing import Optional
 
-# path to the SDK folder
-SDK_PATH: Optional[str] = None
-
 # path to the folder where you want to store data
-DATA_PATH: Optional[str] = './data/'
+DATA_PATH: Optional[str] = '../datasets/cmu_mosi'
 
 # path to a pretrained word embedding file
-WORD_EMB_PATH: Optional[str] = None
+WORD_EMB_PATH: Optional[str] = '../datasets/pretrained_word_embeddings/GloVe'
 
 # path to loaded word embedding matrix and corresponding word2id mapping
-CACHE_PATH: Optional[str] = './data/embedding_and_mapping.pt'
+CACHE_PATH: Optional[str] = None
 
