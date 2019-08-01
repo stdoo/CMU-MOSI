@@ -6,6 +6,17 @@ from ignite.metrics import Accuracy
 
 from mosi_model import model, test_iter
 
+import subprocess
+import shutil
+
+# remove saved models
+if os.path.isdir('./models'):
+    shutil.rmtree('./models')
+
+# number of trainings (number of saved best models)
+for i in range(30):
+    subprocess.call(['python', 'mosi_model.py'])
+
 
 # get test result for each saved best model
 def log_test_results(model, test_iter):

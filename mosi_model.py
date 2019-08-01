@@ -135,7 +135,7 @@ if __name__ == '__main__':
         accuracy = metrics['acc']
         bce = metrics['bce']
         pbar.log_message(
-            f'Validation Results - Epoch: {engine.state.epoch} Avg accuracy: {accuracy:.2f} Avg loss: {bce:.2f}')
+            f'Validation Results - Epoch: {engine.state.epoch} Avg accuracy: {accuracy} Avg loss: {bce}')
 
     # add Checkpointer
     def score_fn_2(engine):
