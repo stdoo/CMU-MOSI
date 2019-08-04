@@ -51,17 +51,17 @@ class Model(Module):
         # self.emb = Embedding(vocab_size, text_dim)
         # self.emb.weight.data = TEXT.vocab.vectors
         # self.emb.weight.data.requires_grd = False
-        self.fc = Linear(47, 1)
+        self.fc = Linear(74, 1)
         self.sig = Sigmoid()
 
-    def forward(self, visual):
+    def forward(self, acoustic):
         # text = self.emb(text)
         # text = torch.mean(text, 1)
-        visual = torch.mean(visual, 1)
+        acoustic = torch.mean(acoustic, 1)
         # acoustic = torch.mean(acoustic, 1)
         #
         # x = torch.cat((text, visual, acoustic), 1)
-        y = self.fc(visual)
+        y = self.fc(acoustic)
         y = self.sig(y).squeeze()
         return y
 
@@ -69,7 +69,7 @@ class Model(Module):
 vocab_size, text_dim = TEXT.vocab.vectors.shape
 model = Model()
 model.to(device)
-optimizer = Adam(model.parameters(), lr=6e-4)
+optimizer = Adam(model.parameters(), lr=6e-3)
 loss_fn = BCELoss()
 
 if __name__ == '__main__':
@@ -78,7 +78,7 @@ if __name__ == '__main__':
         optimizer.zero_grad()
         text, visual, acoustic = batch.text, batch.visual, batch.acoustic
         y = batch.label
-        y_pred = model(visual)
+        y_pred = model(acoustic)
         loss = loss_fn(y_pred, y)
         loss.backward()
         optimizer.step()
@@ -90,7 +90,7 @@ if __name__ == '__main__':
         with torch.no_grad():
             text, visual, acoustic = batch.text, batch.visual, batch.acoustic
             y = batch.label
-            y_pred = model(visual)
+            y_pred = model(acoustic)
             return y_pred, y
 
 
