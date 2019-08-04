@@ -46,28 +46,28 @@ train_iter, dev_iter, test_iter = BucketIterator.splits(
 
 
 class Model(Module):
-    def __init__(self, vocab_size, text_dim):
+    def __init__(self):
         super().__init__()
-        self.emb = Embedding(vocab_size, text_dim)
-        self.emb.weight.data = TEXT.vocab.vectors
-        self.emb.weight.data.requires_grd = False
-        self.fc = Linear(300, 1)
+        # self.emb = Embedding(vocab_size, text_dim)
+        # self.emb.weight.data = TEXT.vocab.vectors
+        # self.emb.weight.data.requires_grd = False
+        self.fc = Linear(47, 1)
         self.sig = Sigmoid()
 
-    def forward(self, text):
-        text = self.emb(text)
-        text = torch.mean(text, 1)
-        # visual = torch.mean(visual, 1)
+    def forward(self, visual):
+        # text = self.emb(text)
+        # text = torch.mean(text, 1)
+        visual = torch.mean(visual, 1)
         # acoustic = torch.mean(acoustic, 1)
         #
         # x = torch.cat((text, visual, acoustic), 1)
-        y = self.fc(text)
+        y = self.fc(visual)
         y = self.sig(y).squeeze()
         return y
 
 
 vocab_size, text_dim = TEXT.vocab.vectors.shape
-model = Model(vocab_size, text_dim)
+model = Model()
 model.to(device)
 optimizer = Adam(model.parameters(), lr=6e-4)
 loss_fn = BCELoss()
@@ -78,7 +78,7 @@ if __name__ == '__main__':
         optimizer.zero_grad()
         text, visual, acoustic = batch.text, batch.visual, batch.acoustic
         y = batch.label
-        y_pred = model(text)
+        y_pred = model(visual)
         loss = loss_fn(y_pred, y)
         loss.backward()
         optimizer.step()
@@ -90,7 +90,7 @@ if __name__ == '__main__':
         with torch.no_grad():
             text, visual, acoustic = batch.text, batch.visual, batch.acoustic
             y = batch.label
-            y_pred = model(text)
+            y_pred = model(visual)
             return y_pred, y
 
 

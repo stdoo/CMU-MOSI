@@ -26,7 +26,7 @@ def log_test_results(model, test_iter):
         with torch.no_grad():
             text, visual, acoustic = batch.text, batch.visual, batch.acoustic
             y = batch.label
-            y_pred = model(text)
+            y_pred = model(visual)
             return y_pred, y
 
     test_evaluator = Engine(inference)
