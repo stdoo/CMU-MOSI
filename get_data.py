@@ -143,7 +143,6 @@ storage_values = [train, dev, test]
 
 for i in range(len(storage_files)):
     pth = os.path.join(DATA_PATH, storage_files[i])
-    if not os.path.isfile(pth):
-        with open(pth, 'wb') as f:
-            pickle.dump(storage_values[i], f)
+    with open(pth, 'wb') as f:
+        pickle.dump(storage_values[i], f)
 
